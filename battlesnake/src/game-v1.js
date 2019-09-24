@@ -1,5 +1,4 @@
 const { Board } = require('./Board');
-
 const { Snake } = require('./Snake');
 
 class Game {
@@ -7,7 +6,6 @@ class Game {
         this.board = new Board(game.board);
         this.me = new Snake(game.you);
         this.snakes = [];
-        // eslint-disable-next-line no-restricted-syntax
         for (const snake of game.board.snakes) {
             this.snakes.push(new Snake(snake));
         }
@@ -45,27 +43,35 @@ class Game {
             const directions = this.getDirections();
 
             const random = Math.floor(Math.random() * 4);
-            if (random === 0 && !directions.left.snake && !directions.left.wall) {
+            if (random === 0
+                && !directions.left.snake
+                && !directions.left.wall) {
                 console.log('left');
                 return { move: 'left' };
             }
-            if (random === 1 && !directions.right.snake && !directions.right.wall) {
+            if (random === 1
+                && !directions.right.snake
+                && !directions.right.wall) {
                 console.log('right');
                 return { move: 'right' };
             }
-            if (random === 2 && !directions.up.snake && !directions.up.wall) {
+            if (random === 2
+                && !directions.up.snake
+                && !directions.up.wall) {
                 console.log('up');
                 return { move: 'up' };
             }
-            if (random === 3 && !directions.down.snake && !directions.down.wall) {
+            if (random === 3
+                && !directions.down.snake
+                && !directions.down.wall) {
                 console.log('down');
                 return { move: 'down' };
             }
             if (
-                (directions.left.snake || directions.left.wall) &&
-                (directions.right.snake || directions.right.wall) &&
-                (directions.up.snake || directions.up.wall) &&
-                (directions.down.snake || directions.down.wall)
+                (directions.left.snake || directions.left.wall)
+                && (directions.right.snake || directions.right.wall)
+                && (directions.up.snake || directions.up.wall)
+                && (directions.down.snake || directions.down.wall)
             ) {
                 return { move: 'death' };
             }
