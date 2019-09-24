@@ -1,0 +1,35 @@
+{
+  "name": "battlesnake",
+  "version": "0.3.0",
+  "description": "myBattlesnake",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production PORT=5000 nodemon index.js",
+    "debug": "cross-env NODE_ENV=development nodemon --inspect index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noveb/battlesnake.git"
+  },
+  "author": "Jochen Wikenhauser",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/noveb/battlesnake/issues"
+  },
+  "homepage": "https://github.com/noveb/battlesnake#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "morgan": "^1.9.1",
+    "pathfinding": "^0.4.18",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "cross-env": "^6.0.0",
+    "eslint": "^6.4.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "nodemon": "^1.19.2"
+  }
+}

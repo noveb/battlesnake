@@ -1,8 +1,6 @@
 FROM alpine:latest
 
-RUN apk update && apk upgrade
-
-RUN apk add curl tar bash
+RUN apk update && apk upgrade && apk add curl tar bash
 
 WORKDIR /root
 
@@ -10,5 +8,11 @@ RUN curl -L https://github.com/battlesnakeio/engine/releases/download/v0.2.23/en
 
 EXPOSE 3010/tcp
 EXPOSE 3010/udp
+EXPOSE 3009/tcp
+EXPOSE 3009/udp
+EXPOSE 3005/tcp
+EXPOSE 3005/udp
+EXPOSE 3004/tcp
+EXPOSE 3004/udp
 
 ENTRYPOINT ["./engine", "dev"]

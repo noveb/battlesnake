@@ -1,4 +1,5 @@
 'use strict';
+const pathFinder = require('pathfinding');
 
 const direction = {
     0: 'up',
@@ -20,59 +21,63 @@ class Game {
     }
 
     nextMoveFood () {
-        let directions = this.getDirections()
-
-        if (directions.left.food && !directions.left.snake && !directions.left.wall) {
-            return { move: 'left' }
-        } else if (directions.right.food && !directions.right.snake && !directions.right.wall) {
-            return { move: 'right' }
-        } else if (directions.up.food && !directions.up.snake && !directions.up.wall) {
-            return { move: 'up' }
-        } else if (directions.down.food && !directions.down.snake && !directions.down.wall) {
-            return { move: 'down' }
+        try {
+            let unwalkables = this.getAllUnwalkables()
+            console.log(unwalkables)
+            let grid = this.initGrid(unwalkables)
+            let path = new Array(999999)
+            let aStar = new pathFinder.AStarFinder()
+            for (let food of this.board.food) {
+                let workingGrid = grid.clone()
+                let workingPath = aStar.findPath(
+                    this.me.body[0].x,
+                    this.me.body[0].y,
+                    food.x, food.y, workingGrid
+                )
+                if (workingPath.length > 0 && workingPath.length < path.length) {
+                    path = workingPath
+                }
+            }
+            let direction = this.getDirectionFromCoords(this.me.body[0], { x: path[1][0], y: path[1][1] })
+            console.log (direction)
+            return direction
+        } catch (error) {
+            console.error(error)
+            return undefined
         }
-        return this.nextMoveRandom()
     }
 
-    nextMoveRandom () {
+    getDirectionFromCoords (start = {x, y}, goal = {x, y}) {
         try {
-            let directions = this.getDirections()
-
-            console.log(directions)
-            let random = Math.floor(Math.random()*4)
-            if (random === 0 && !directions.left.snake && !directions.left.wall) {
-                return { move: 'left' }
-            } else if (random === 1 && !directions.right.snake && !directions.right.wall) {
-                return { move: 'right' }
-            } else if (random === 2 && !directions.up.snake && !directions.up.wall) {
-                return { move: 'up' }
-            } else if (random === 3 && !directions.down.snake && !directions.down.wall) {
-                return { move: 'down' }
-            } else if (
-                (directions.left.snake || directions.left.wall) &&
-                (directions.right.snake || directions.right.wall) &&
-                (directions.up.snake || directions.up.wall) &&
-                (directions.down.snake || directions.down.wall)
-            ) {
-                return { move: 'death' }
-            }
-            return this.nextMoveRandom()
+            if (goal.x > start.x) return { 'move': 'right' }
+            if (goal.x < start.x) return { 'move': 'left' }
+            if (goal.y > start.y) return { 'move': 'down' }
+            if (goal.y < start.y) return { 'move': 'up' }
+            console.log('ups')
         } catch (error) {
             console.error(error)
         }
     }
 
-    getDirections () {
-        try {
-            let directions = this.me.possibleMoves()
-            directions = this.me.checkMoves(directions)
-            for (let snake of this.snakes) {
-                directions = snake.checkMoves(directions)
-            }
-            directions = this.board.checkMoves(directions)
+    initGrid (unwalkables) {
+        let grid = new pathFinder.Grid(this.board.width, this.board.height)
+        for (let field of unwalkables){
+            grid.setWalkableAt(field.x, field.y, false)
+        }
+        return grid
+    }
 
-            console.log(directions)
-            return directions
+    getAllUnwalkables () {
+        try {
+            let unwalkables = []
+            unwalkables = unwalkables.concat(this.me.body)
+            console.log(unwalkables)
+            for (let snake of this.snakes) {
+                unwalkables = unwalkables.concat(snake.body)
+            }
+            console.log(unwalkables)
+
+            return unwalkables
         } catch (error) {
             console.error(error)
         }
@@ -134,7 +139,7 @@ class Board {
         this.height = board.height
         this.width = board.width
         this.food = board.food
-        console.log('BOARD :: OK', this.food)
+        console.log('BOARD :: OK')
     }
 
     checkMoves (directions) {
@@ -156,7 +161,6 @@ class Board {
     isWall (coord = { x, y }) {
         if (coord.x >= this.width || coord.x < 0) return true
         if (coord.y >= this.height || coord.y < 0) return true
-        console.log(coord)
         return false
     }
 
