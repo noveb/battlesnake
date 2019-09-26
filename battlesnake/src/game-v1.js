@@ -9,7 +9,6 @@ class Game {
         for (const snake of game.board.snakes) {
             this.snakes.push(new Snake(snake));
         }
-        console.log('GAME :: OK');
     }
 
     nextMoveFood() {
@@ -46,25 +45,21 @@ class Game {
             if (random === 0
                 && !directions.left.snake
                 && !directions.left.wall) {
-                console.log('left');
                 return { move: 'left' };
             }
             if (random === 1
                 && !directions.right.snake
                 && !directions.right.wall) {
-                console.log('right');
                 return { move: 'right' };
             }
             if (random === 2
                 && !directions.up.snake
                 && !directions.up.wall) {
-                console.log('up');
                 return { move: 'up' };
             }
             if (random === 3
                 && !directions.down.snake
                 && !directions.down.wall) {
-                console.log('down');
                 return { move: 'down' };
             }
             if (

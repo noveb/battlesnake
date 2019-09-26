@@ -3,7 +3,6 @@ class Board {
         this.height = board.height;
         this.width = board.width;
         this.food = board.food;
-        console.log('BOARD :: OK');
     }
 
     checkMoves(directions) {

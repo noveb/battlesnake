@@ -31,7 +31,7 @@ app.post('/start', (request, response) => {
 
     // Response data
     const data = {
-        color: '#0FFFFF',
+        color: '#000000',
         headType: 'pixel',
         tailType: 'pixel',
     };
@@ -44,12 +44,27 @@ app.post('/move', (request, response) => {
     // NOTE: Do something here to generate your move
     try {
         const myGame2 = new Game2(request.body);
-        let move = myGame2.nextMoveFood();
+
+        let move = myGame2.nextMoveFood(true);
+        console.log(`Turn: ${request.body.turn}: myGame2.nextMoveFood: avoidSnakes`, move);
+
+        if (move === undefined) {
+            move = myGame2.nextMoveTail(true);
+            console.log(`Turn: ${request.body.turn}: myGame2.nextMoveTail avoidSnakes: `, move);
+        }
+        if (move === undefined) {
+            move = myGame2.nextMoveFood(false);
+            console.log(`Turn: ${request.body.turn}: myGame2.nextMoveFood: `, move);
+        }
+        if (move === undefined) {
+            move = myGame2.nextMoveTail(false);
+            console.log(`Turn: ${request.body.turn}: myGame2.nextMoveTail: `, move);
+        }
         if (move === undefined) {
             const myGame1 = new Game1(request.body);
-            move = myGame1.nextMoveFood();
+            move = myGame1.nextMoveRandom();
+            console.log(`Turn: ${request.body.turn}: myGame1.nextMoveRandom: `, move);
         }
-        console.log(move);
 
         return response.json(move);
     } catch (error) {
