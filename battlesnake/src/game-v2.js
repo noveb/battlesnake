@@ -31,7 +31,7 @@ class Game {
             const grid = this.initGrid(unwalkables);
             let path = new Array(999999);
             const aStar = new pathFinder.AStarFinder({
-                heuristic: pathFinder.Heuristic.chebyshev,
+                heuristic: pathFinder.Heuristic.manhattan,
             });
             for (const food of this.board.food) {
                 const workingGrid = grid.clone();
@@ -64,7 +64,7 @@ class Game {
             const toTailGrid = grid.clone();
             toTailGrid.setWalkableAt(end.x, end.y, true);
             const aStar = new pathFinder.AStarFinder({
-                heuristic: pathFinder.Heuristic.chebyshev,
+                heuristic: pathFinder.Heuristic.manhattan,
             });
             const toTail = aStar.findPath(
                 start.x, start.y,
@@ -100,7 +100,7 @@ class Game {
             const unwalkables = this.getAllUnwalkables(true, avoidSnakes);
             const grid = this.initGrid(unwalkables);
             const aStar = new pathFinder.AStarFinder({
-                heuristic: pathFinder.Heuristic.chebyshev,
+                heuristic: pathFinder.Heuristic.manhattan,
             });
             const path = aStar.findPath(
                 this.me.head.x,

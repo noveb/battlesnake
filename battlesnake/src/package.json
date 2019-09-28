@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=production PORT=5000 node index.js",
-    "debug": "cross-env NODE_ENV=development nodemon --inspect index.js",
+    "debug": "cross-env NODE_ENV=development PORT=9001 nodemon --inspect index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,6 +21,7 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
+    "mongoose": "^5.7.1",
     "morgan": "^1.9.1",
     "pathfinding": "^0.4.18",
     "winston": "^3.2.1"
