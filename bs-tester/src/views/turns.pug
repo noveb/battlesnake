@@ -1,0 +1,8 @@
+doctype html
+html(lang="en")
+    h1 Turns of #{game}
+    a(href='/') Back to Games
+    ul
+    for item in turns
+        li
+            a(href='/game/' + game + '/turn/' + item, ) #{item}

@@ -1,0 +1,7 @@
+doctype html
+html(lang="en")
+    h1 Games
+    ul
+    for item in games
+        li
+            a.button(href='/game/'+ item) #{item}
