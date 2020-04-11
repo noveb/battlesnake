@@ -8,7 +8,7 @@ const {
     poweredByHandler,
 } = require('./handlers');
 
-const connectDb = require('./db-connection');
+// const connectDb = require('./db-connection');
 const GameData = require('./gameData.model');
 const MoveController = require('./move.controller');
 
@@ -26,9 +26,9 @@ app.use(poweredByHandler);
 
 // --- SNAKE LOGIC GOES BELOW THIS LINE ---
 
-connectDb().then(() => {
-    console.log('MongoDb connected');
-});
+// connectDb().then(() => {
+//     console.log('MongoDb connected');
+// });
 
 
 // Handle POST request to '/start'
@@ -47,8 +47,8 @@ app.post('/start', (request, response) => {
 
 // Handle POST request to '/move'
 app.post('/move', (request, response) => {
-    const game = new GameData(request.body);
-    game.save().then().catch((error) => console.error(error));
+    // const game = new GameData(request.body);
+    // game.save().then().catch((error) => console.error(error));
 
     const move = new MoveController(request, response);
     move.move();
