@@ -6,7 +6,7 @@ class Snake {
         this.body = snake.body;
         this.length = this.body.length;
         [this.head] = this.body;
-        this.tail = this.body.pop();
+        [this.tail] = this.body.slice(-1);
     }
 
     checkMoves(directions) {
