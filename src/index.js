@@ -30,7 +30,16 @@ app.use(poweredByHandler);
 //     console.log('MongoDb connected');
 // });
 
-
+app.get('/', (req, res) => {
+    const data = {
+        apiversion: '1',
+        author : 'noveb',
+        color: '#000000',
+        head : 'pixel',
+        tail: 'pixel'
+    }
+    return res.json(data);
+});
 // Handle POST request to '/start'
 app.post('/start', (request, response) => {
     // NOTE: Do something here to start the game
@@ -42,7 +51,7 @@ app.post('/start', (request, response) => {
         tailType: 'pixel',
     };
 
-    return response.json(data);
+    return response.sendStatus(200);
 });
 
 // Handle POST request to '/move'
@@ -57,7 +66,7 @@ app.post('/move', (request, response) => {
 // eslint-disable-next-line arrow-body-style
 app.post('/end', (request, response) => {
     // NOTE: Any cleanup when a game is complete.
-    return response.json({});
+    return response.sendStatus(200);
 });
 
 app.post('/ping', (request, response) => response.json({}));
