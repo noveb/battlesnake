@@ -9,7 +9,7 @@ const {
 } = require('./handlers');
 
 // const connectDb = require('./db-connection');
-const GameData = require('./gameData.model');
+// const GameData = require('./gameData.model');
 const MoveController = require('./move.controller');
 
 const app = express();
@@ -29,7 +29,6 @@ app.use(poweredByHandler);
 // connectDb().then(() => {
 //     console.log('MongoDb connected');
 // });
-
 
 // Handle POST request to '/start'
 app.post('/start', (request, response) => {
