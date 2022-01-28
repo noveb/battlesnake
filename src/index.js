@@ -41,7 +41,7 @@ app.post('/start', (request, response) => {
         tailType: 'pixel',
     };
 
-    return response.json(data);
+    return response.sendStatus(200);
 });
 
 // Handle POST request to '/move'
@@ -56,7 +56,7 @@ app.post('/move', (request, response) => {
 // eslint-disable-next-line arrow-body-style
 app.post('/end', (request, response) => {
     // NOTE: Any cleanup when a game is complete.
-    return response.json({});
+    return response.sendStatus(200);
 });
 
 app.post('/ping', (request, response) => response.json({}));

@@ -126,8 +126,8 @@ class Game {
         try {
             if (goal.x > start.x) return { move: 'right' };
             if (goal.x < start.x) return { move: 'left' };
-            if (goal.y > start.y) return { move: 'down' };
-            if (goal.y < start.y) return { move: 'up' };
+            if (goal.y < start.y) return { move: 'down' };
+            if (goal.y > start.y) return { move: 'up' };
             return undefined;
         } catch (error) {
             console.error(error);
