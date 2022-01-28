@@ -8,15 +8,13 @@ const {
     poweredByHandler,
 } = require('./handlers');
 
-// const connectDb = require('./db-connection');
-// const GameData = require('./gameData.model');
 const MoveController = require('./move.controller');
 
 const app = express();
 
 // For deployment to Heroku, the port needs to be set using ENV, so
 // we check for the port number in process.env
-app.set('port', (process.env.PORT || 9001));
+app.set('port', (process.env.PORT || 9000));
 
 app.enable('verbose errors');
 
@@ -24,11 +22,16 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(poweredByHandler);
 
-// --- SNAKE LOGIC GOES BELOW THIS LINE ---
-
-// connectDb().then(() => {
-//     console.log('MongoDb connected');
-// });
+app.get('/', (request, response) => response.json(
+    {
+        apiversion: '1',
+        author: 'noveb',
+        color: '#111111',
+        head: 'pixel',
+        tail: 'pixel',
+        version: '0.3.3',
+    },
+));
 
 // Handle POST request to '/start'
 app.post('/start', (request, response) => {

@@ -1,5 +1,5 @@
 const Game1 = require('./game-v1');
-const Game2 = require('./game-v3');
+const Game2 = require('./game-v2');
 
 class MoveController {
     constructor(request, response) {
@@ -13,27 +13,27 @@ class MoveController {
 
             let move;
 
-            // if (move === undefined) {
-                //     move = myGame2.nextMoveTail(true);
-                //     console.log(`Turn: ${this.request.body.turn}: myGame2.nextMoveTail avoidSnakes: `, move);
-            // }
-            // if (move === undefined) {
-            //     move = myGame2.nextMoveFood(false);
-            //     console.log(`Turn: ${this.request.body.turn}: myGame2.nextMoveFood: `, move);
-            // }
             if (move === undefined) {
-                move = myGame2.calcPathFromFoodToMe();
-                console.log(`Turn: ${this.request.body.turn}: myGame2.calcPathFromFoodToMe: `, move);
+                move = myGame2.nextMoveFood(true);
+                console.log(`Turn: ${this.request.body.turn}: myGame2.nextMoveFood: avoidSnakes`, move);
             }
-            // if (move === undefined) {
-            //     move = myGame2.nextMoveFood();
-            //     console.log(`Turn: ${this.request.body.turn}: myGame2.nextMoveFood: avoidSnakes`, move);
-            // }
-            // if (move === undefined) {
-            //     const myGame1 = new Game1(this.request.body);
-            //     move = myGame1.nextMoveRandom();
-            //     console.log(`Turn: ${this.request.body.turn}: myGame1.nextMoveRandom: `, move);
-            // }
+            if (move === undefined) {
+                move = myGame2.nextMoveTail(true);
+                console.log(`Turn: ${this.request.body.turn}: myGame2.nextMoveTail avoidSnakes: `, move);
+            }
+            if (move === undefined) {
+                move = myGame2.nextMoveFood(false);
+                console.log(`Turn: ${this.request.body.turn}: myGame2.nextMoveFood: avoidSnakes`, move);
+            }
+            if (move === undefined) {
+                move = myGame2.nextMoveTail(false);
+                console.log(`Turn: ${this.request.body.turn}: myGame2.nextMoveTail avoidSnakes: `, move);
+            }
+            if (move === undefined) {
+                const myGame1 = new Game1(this.request.body);
+                move = myGame1.nextMoveRandom();
+                console.log(`Turn: ${this.request.body.turn}: myGame1.nextMoveRandom: `, move);
+            }
 
             return this.response.json(move);
         } catch (error) {

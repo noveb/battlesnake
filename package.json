@@ -1,6 +1,6 @@
 {
   "name": "battlesnake",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "myBattlesnake",
   "main": "index.js",
   "scripts": {

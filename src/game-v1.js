@@ -41,27 +41,6 @@ class Game {
         try {
             const directions = this.getDirections();
 
-            const random = Math.floor(Math.random() * 4);
-            if (random === 0
-                && !directions.left.snake
-                && !directions.left.wall) {
-                return { move: 'left' };
-            }
-            if (random === 1
-                && !directions.right.snake
-                && !directions.right.wall) {
-                return { move: 'right' };
-            }
-            if (random === 2
-                && !directions.up.snake
-                && !directions.up.wall) {
-                return { move: 'up' };
-            }
-            if (random === 3
-                && !directions.down.snake
-                && !directions.down.wall) {
-                return { move: 'down' };
-            }
             if (
                 (directions.left.snake || directions.left.wall)
                 && (directions.right.snake || directions.right.wall)
@@ -70,7 +49,28 @@ class Game {
             ) {
                 return { move: 'death' };
             }
-            return this.nextMoveRandom();
+
+            const moves = [];
+
+            const random = Math.floor(Math.random() * 4);
+            if (!directions.left.snake
+                && !directions.left.wall) {
+                moves.push({ move: 'left' });
+            }
+            if (!directions.right.snake
+                && !directions.right.wall) {
+                moves.push({ move: 'right' });
+            }
+            if (!directions.up.snake
+                && !directions.up.wall) {
+                moves.push({ move: 'up' });
+            }
+            if (!directions.down.snake
+                && !directions.down.wall) {
+                moves.push({ move: 'down' });
+            }
+
+            return moves[random % moves.length];
         } catch (error) {
             console.error(error);
             throw error;
