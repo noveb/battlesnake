@@ -1,27 +1,7 @@
-version: "2"
+version: "3.9"
 
 services:
   api:
-    build: ./src/
+    build: .
     ports:
-      - "9001:5000"
-    depends_on:
-      - mongo
-    # environment:
-    #   ME_CONFIG_MONGODB_ADMINUSERNAME: root
-    #   ME_CONFIG_MONGODB_ADMINPASSWORD: example
-  
-  mongo:
-    image: mongo
-    expose:
-      - "27017"
-    # environment:
-    #   MONGO_INITDB_ROOT_USERNAME: root
-    #   MONGO_INITDB_ROOT_PASSWORD: example
-
-  mongo-express:
-    image: mongo-express
-    depends_on: 
-      - mongo
-    ports:
-      - "8081:8081"
+      - "9000:5000"

@@ -9,7 +9,7 @@ const {
 } = require('./handlers');
 
 // const connectDb = require('./db-connection');
-const GameData = require('./gameData.model');
+// const GameData = require('./gameData.model');
 const MoveController = require('./move.controller');
 
 const app = express();
@@ -30,16 +30,6 @@ app.use(poweredByHandler);
 //     console.log('MongoDb connected');
 // });
 
-app.get('/', (req, res) => {
-    const data = {
-        apiversion: '1',
-        author : 'noveb',
-        color: '#000000',
-        head : 'pixel',
-        tail: 'pixel'
-    }
-    return res.json(data);
-});
 // Handle POST request to '/start'
 app.post('/start', (request, response) => {
     // NOTE: Do something here to start the game
