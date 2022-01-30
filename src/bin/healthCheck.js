@@ -2,8 +2,6 @@
 
 const http = require('http');
 
-const exit = ({ healthy = true } = {}) => (healthy ? process.exit(0) : process.exit(1));
-
 const checkAPI = () => new Promise((resolve, reject) => {
   http.get('http://localhost:5000/health', (res) => {
     const { statusCode } = res;
@@ -19,14 +17,14 @@ const check = () => Promise.all([
   checkAPI(),
 ]);
 
-const handleSuccessfulConnection = (healthCheck) => () => {
-  healthCheck({ healthy: true });
+const healthy = () => {
+  process.exit(0);
 };
 
-const handleUnsuccessfulConnection = (healthCheck) => () => {
-  healthCheck({ healthy: false });
+const unhealthy = () => {
+  process.exit(1);
 };
 
 check()
-  .then(handleSuccessfulConnection(exit))
-  .catch(handleUnsuccessfulConnection(exit));
+  .then(healthy)
+  .catch(unhealthy);
