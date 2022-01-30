@@ -1,33 +1,51 @@
-const pathFinder = require('pathfinding');
-const { Board } = require('./Board');
-const { Snake } = require('./Snake');
+import { Logger } from 'winston';
+import * as pathFinder from 'pathfinding';
+import Board from './Board';
+import Snake from './Snake';
+import {
+  Coordinate, Directions, GameStatus, ISnake,
+} from '../types';
 
-class Game {
-  constructor(game, logger) {
+export default class Game {
+  logger: Logger;
+
+  board: Board;
+
+  me: Snake;
+
+  snakes: Snake[];
+
+  longestSnake: number;
+
+  turn: number;
+
+  constructor(game: GameStatus, logger: Logger) {
     this.logger = logger;
-    this.board = new Board(game.board);
-    this.me = new Snake(game.you);
+    this.board = new Board(game.board, this.logger);
+    this.me = new Snake(game.you, this.logger);
     this.snakes = [];
     this.longestSnake = 0;
     this.turn = game.turn;
-    this.initSnakes(game.board.snakes);
+    this.snakes = this.initSnakes(game.board.snakes);
   }
 
-  initSnakes(snakes) {
+  initSnakes(snakes: ISnake[]) {
+    const snakeInstances: Snake[] = [];
     snakes.forEach((snake) => {
       if (snake.name === this.me.name) {
         return;
       }
-      this.snakes.push(new Snake(snake));
+      snakeInstances.push(new Snake(snake, this.logger));
       if (snake.body.length > this.longestSnake) {
         this.longestSnake = snake.body.length;
       }
     });
+    return snakeInstances;
   }
 
   nextMoveFood(avoidSnakes = true) {
     try {
-      const unwalkables = this.getAllUnwalkables(true, avoidSnakes);
+      const unwalkables: Coordinate[] = this.getAllUnwalkables(true, avoidSnakes);
       const grid = this.initGrid(unwalkables);
       let path = new Array(999999);
       const aStar = new pathFinder.AStarFinder({
@@ -61,7 +79,7 @@ class Game {
     }
   }
 
-  existsEscapePath(start, end, grid) {
+  existsEscapePath(start: Coordinate, end: Coordinate, grid: pathFinder.Grid) {
     try {
       const toTailGrid = grid.clone();
       toTailGrid.setWalkableAt(end.x, end.y, true);
@@ -103,7 +121,7 @@ class Game {
 
   nextMoveTail(avoidSnakes = true) {
     try {
-      const unwalkables = this.getAllUnwalkables(true, avoidSnakes);
+      const unwalkables: Coordinate[] = this.getAllUnwalkables(true, avoidSnakes);
       const grid = this.initGrid(unwalkables);
       const aStar = new pathFinder.AStarFinder({
         heuristic: pathFinder.Heuristic.manhattan,
@@ -130,7 +148,7 @@ class Game {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  getDirectionFromCoords(start, goal) {
+  getDirectionFromCoords(start: Coordinate, goal: Coordinate) {
     try {
       if (goal.x > start.x) return { move: 'right' };
       if (goal.x < start.x) return { move: 'left' };
@@ -143,7 +161,7 @@ class Game {
     }
   }
 
-  initGrid(unwalkables) {
+  initGrid(unwalkables: Coordinate[]): pathFinder.Grid {
     try {
       const grid = new pathFinder.Grid(this.board.width, this.board.height);
       unwalkables.forEach((field) => {
@@ -158,7 +176,7 @@ class Game {
 
   getAllUnwalkables(dropMyTail = false, avoidSnakes = true) {
     try {
-      let unwalkables = [];
+      let unwalkables: Coordinate[] = [];
       unwalkables = unwalkables.concat(this.me.body);
       if (dropMyTail === true) {
         if (this.me.getDistanceHeadTail() > 1) {
@@ -200,6 +218,60 @@ class Game {
       throw error;
     }
   }
-}
 
-module.exports = Game;
+  nextMoveRandom() {
+    try {
+      const directions: Directions = this.getDirections();
+
+      if (
+        (directions.left.snake || directions.left.wall)
+          && (directions.right.snake || directions.right.wall)
+          && (directions.up.snake || directions.up.wall)
+          && (directions.down.snake || directions.down.wall)
+      ) {
+        return { move: 'death' };
+      }
+
+      const moves = [];
+
+      const random = Math.floor(Math.random() * 4);
+      if (!directions.left.snake
+        && !directions.left.wall) {
+        moves.push({ move: 'left' });
+      }
+      if (!directions.right.snake
+        && !directions.right.wall) {
+        moves.push({ move: 'right' });
+      }
+      if (!directions.up.snake
+        && !directions.up.wall) {
+        moves.push({ move: 'up' });
+      }
+      if (!directions.down.snake
+        && !directions.down.wall) {
+        moves.push({ move: 'down' });
+      }
+
+      return moves[random % moves.length];
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
+    }
+  }
+
+  getDirections() {
+    try {
+      let directions = this.me.possibleMoves();
+      directions = this.me.checkMoves(directions);
+      this.snakes.forEach((snake) => {
+        directions = snake.checkMoves(directions);
+      });
+      directions = this.board.checkMoves(directions);
+
+      return directions;
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
+    }
+  }
+}
