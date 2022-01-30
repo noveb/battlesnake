@@ -19,3 +19,4 @@ USER node
 
 CMD [ "npm", "run", "debug:docker" ]
 ENTRYPOINT ["/sbin/tini", "--"]
+HEALTHCHECK --interval=10s --timeout=1s CMD node ./src/bin/healthCheck.js

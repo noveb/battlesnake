@@ -16,8 +16,6 @@ const app = express();
 
 app.set('port', (process.env.PORT || 5000));
 
-// app.enable('verbose errors');
-
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(poweredByHandler);
@@ -32,6 +30,8 @@ app.get('/', (req: Request, res: Response) => res.json(
     version: '0.3.3',
   },
 ));
+
+app.get('/health', (req: Request, res: Response) => res.sendStatus(200));
 
 app.post('/start', (req: Request, res: Response) => res.sendStatus(200));
 
