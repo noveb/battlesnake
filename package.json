@@ -8,7 +8,7 @@
     "start": "cross-env NODE_ENV=production PORT=9000 node ./dist/index.js",
     "debug": "cross-env NODE_ENV=development PORT=9000 nodemon ./src/index.ts",
     "debug:docker": "nodemon ./src/index.ts",
-    "lint": "eslint --cache --ext .js,.ts .",
+    "lint": "eslint --cache --ext .js,.ts ./src",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install"
   },
