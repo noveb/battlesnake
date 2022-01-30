@@ -17,6 +17,9 @@ lib-cov
 # Coverage directory used by tools like istanbul
 coverage
 
+# Eslint
+.eslintcache
+
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
 
@@ -32,4 +35,11 @@ node_modules
 
 # Debug log from npm
 npm-debug.log
+
+# TS files
+dist
+**/*.map.*
+
+# Template files
+config-templates
 
