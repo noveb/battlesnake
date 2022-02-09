@@ -10,6 +10,7 @@ import {
   genericErrorHandler,
 } from './handlers';
 import gameController from './game';
+import { db } from './database';
 
 const app = express();
 
@@ -19,8 +20,18 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 
 app.use(gameController.router);
-app.get('/health', (req: Request, res: Response) => res.sendStatus(200));
-
+app.get('/health', (req: Request, res: Response) => {
+  if (db.readyState !== 1) {
+    return res.status(500).json({
+      api: 'ready',
+      database: 'faulty',
+    });
+  }
+  return res.status(200).json({
+    api: 'ready',
+    database: 'ready',
+  });
+});
 app.use('*', fallbackHandler);
 app.use(notFoundHandler);
 app.use(genericErrorHandler);

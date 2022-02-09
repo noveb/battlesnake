@@ -7,10 +7,7 @@ import SSPEngine from './SimpleShortestPath/SimpleShortestPathEngine';
 class Controller {
   public router = Router();
 
-  logger: Logger;
-
-  constructor(logger: Logger) {
-    this.logger = logger;
+  constructor(private logger: Logger, private GameStatus: any) {
     this.router.get('/', Controller.root);
     this.router.post('/start', Controller.start);
     this.router.post('/move', this.move);
@@ -33,8 +30,8 @@ class Controller {
   private static start = (req: Request, res: Response) => res.sendStatus(200);
 
   private move = (req: Request, res: Response) => {
-    const sspEngine = new SSPEngine(req.body, this.logger);
-    const move: Move = sspEngine.move();
+    const game = new this.GameStatus(req.body);
+    game.save().then().catch((error: Error) => this.logger.error(error));
     return res.status(200).json(move);
   };
 

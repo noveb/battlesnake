@@ -12,9 +12,12 @@ services:
       cache_from:
         - node:16-alpine
     restart: unless-stopped
+    depends_on:
+      - mongo
     env_file: .env
     environment:
       TIMEZONE: UTC
+      MONGO_URL: mongodb://mongo:27017/
     ports:
       - 9000:5000
       - 9229:9229
@@ -28,6 +31,33 @@ services:
       - ./nodemon.json:/app/nodemon.json
       - ./src:/app/src
     command: npm run debug:docker
+
+  mongo:
+    image: mongo
+    restart: unless-stopped
+    networks:
+      - bs_network
+      # environment:
+      # MONGO_INITDB_ROOT_USERNAME: root
+      # MONGO_INITDB_ROOT_PASSWORD: battlesnake
+    logging:
+      driver: none
+
+  mongo-express:
+    image: mongo-express
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    ports:
+      - 8081:8081
+    networks:
+      - bs_network
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
+      # ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      # ME_CONFIG_MONGODB_ADMINPASSWORD: battlesnake
+    logging:
+      driver: none
 
 networks:
   bs_network:
