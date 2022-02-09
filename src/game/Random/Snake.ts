@@ -1,9 +1,7 @@
-import { Logger } from 'winston';
+import logger from '../../logger';
 import { ISnake, Coordinate, Directions } from '../../shared/types';
 
 export default class Snake implements ISnake {
-  logger: Logger;
-
   id: string;
 
   name: string;
@@ -30,8 +28,7 @@ export default class Snake implements ISnake {
     tail: string
   };
 
-  constructor(snake: ISnake, logger: Logger) {
-    this.logger = logger;
+  constructor(snake: ISnake) {
     this.id = snake.id;
     this.name = snake.name;
     this.health = snake.health;
@@ -57,7 +54,7 @@ export default class Snake implements ISnake {
       };
       return directions;
     } catch (error) {
-      this.logger.error(error);
+      logger.error(error);
       throw error;
     }
   }
