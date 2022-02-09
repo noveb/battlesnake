@@ -14,9 +14,16 @@ RUN apk add --no-cache tini
 COPY --from=devDependencies --chown=node:node /app/node_modules ./node_modules
 COPY --from=devDependencies /wait-for-it.sh /wait-for-it.sh
 COPY --chown=node:node src ./src
-
 USER node
-
 CMD [ "npm", "run", "debug:docker" ]
 ENTRYPOINT ["/sbin/tini", "--"]
 HEALTHCHECK --interval=10s --timeout=1s CMD node ./src/bin/healthCheck.js
+
+FROM base as test
+RUN apk add --no-cache git
+COPY --from=devDependencies --chown=node:node /app/node_modules ./node_modules
+COPY --from=devDependencies /wait-for-it.sh /wait-for-it.sh
+COPY --chown=node:node .git ./.git
+COPY --chown=node:node src ./src
+USER node
+CMD [ "npm", "run", "test:watch" ]
