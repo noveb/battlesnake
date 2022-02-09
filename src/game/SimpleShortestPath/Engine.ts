@@ -1,8 +1,8 @@
 import type { Logger } from 'winston';
-import type { Engine, GameStatus, Move } from '../types';
-import Strategy from './SimpleShortestPathStrategy';
+import type { Engine, GameStatus, Move } from '../../shared/types';
+import Strategy from './Strategy';
 
-export default class SimpleShortestPathEngine implements Engine {
+export default class SspEngine implements Engine {
   logger: Logger;
 
   game: GameStatus;
@@ -13,6 +13,7 @@ export default class SimpleShortestPathEngine implements Engine {
     this.logger = logger;
     this.game = game;
     this.strategy = new Strategy(this.game, this.logger);
+    // this.logger.debug(JSON.stringify(this.game, null, 2));
   }
 
   move() {

@@ -3,10 +3,10 @@ import * as pathFinder from 'pathfinding';
 import Board from './Board';
 import Snake from './Snake';
 import {
-  Coordinate, Directions, GameStatus, ISnake,
-} from '../types';
+  Coordinate, GameStatus, ISnake,
+} from '../../shared/types';
 
-export default class Game {
+export default class SspStrategy {
   logger: Logger;
 
   board: Board;
@@ -62,8 +62,8 @@ export default class Game {
         );
         const canEscape = this.existsEscapePath(food, this.me.tail, grid.clone());
         if (workingPath.length > 0
-                    && canEscape === true
-                    && workingPath.length < path.length) {
+          && canEscape === true
+          && workingPath.length < path.length) {
           path = workingPath;
         }
       });
@@ -213,62 +213,6 @@ export default class Game {
       });
 
       return unwalkables;
-    } catch (error) {
-      this.logger.error(error);
-      throw error;
-    }
-  }
-
-  nextMoveRandom() {
-    try {
-      const directions: Directions = this.getDirections();
-
-      if (
-        (directions.left.snake || directions.left.wall)
-          && (directions.right.snake || directions.right.wall)
-          && (directions.up.snake || directions.up.wall)
-          && (directions.down.snake || directions.down.wall)
-      ) {
-        return { move: 'death' };
-      }
-
-      const moves = [];
-
-      const random = Math.floor(Math.random() * 4);
-      if (!directions.left.snake
-        && !directions.left.wall) {
-        moves.push({ move: 'left' });
-      }
-      if (!directions.right.snake
-        && !directions.right.wall) {
-        moves.push({ move: 'right' });
-      }
-      if (!directions.up.snake
-        && !directions.up.wall) {
-        moves.push({ move: 'up' });
-      }
-      if (!directions.down.snake
-        && !directions.down.wall) {
-        moves.push({ move: 'down' });
-      }
-
-      return moves[random % moves.length];
-    } catch (error) {
-      this.logger.error(error);
-      throw error;
-    }
-  }
-
-  getDirections() {
-    try {
-      let directions = this.me.possibleMoves();
-      directions = this.me.checkMoves(directions);
-      this.snakes.forEach((snake) => {
-        directions = snake.checkMoves(directions);
-      });
-      directions = this.board.checkMoves(directions);
-
-      return directions;
     } catch (error) {
       this.logger.error(error);
       throw error;

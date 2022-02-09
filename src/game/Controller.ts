@@ -1,8 +1,9 @@
 import type { Request, Response } from 'express';
 import type { Logger } from 'winston';
 import { Router } from 'express';
-import type { ApiDetails, Move } from './types';
-import SSPEngine from './SimpleShortestPath/SimpleShortestPathEngine';
+import type { ApiDetails, Move } from '../shared/types';
+import SspEngine from './SimpleShortestPath';
+import RandomEngine from './Random';
 
 class Controller {
   public router = Router();
@@ -19,7 +20,7 @@ class Controller {
     const apiDetails: ApiDetails = {
       apiversion: '1',
       author: 'noveb',
-      color: '#111111',
+      color: '#000000',
       head: 'pixel',
       tail: 'pixel',
       version: '0.4.0',
@@ -32,6 +33,12 @@ class Controller {
   private move = (req: Request, res: Response) => {
     const game = new this.GameStatus(req.body);
     game.save().then().catch((error: Error) => this.logger.error(error));
+    const sspEngine = new SspEngine(req.body, this.logger);
+    let move: Move = sspEngine.move();
+    if (!move) {
+      const randomEngine = new RandomEngine(req.body, this.logger);
+      move = randomEngine.move();
+    }
     return res.status(200).json(move);
   };
 

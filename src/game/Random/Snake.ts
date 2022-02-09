@@ -1,5 +1,5 @@
 import { Logger } from 'winston';
-import { ISnake, Coordinate } from '../../shared/types';
+import { ISnake, Coordinate, Directions } from '../../shared/types';
 
 export default class Snake implements ISnake {
   logger: Logger;
@@ -45,16 +45,20 @@ export default class Snake implements ISnake {
     this.customizations = snake.customizations;
   }
 
-  getDistanceHeadTail() {
+  possibleMoves() {
     try {
-      const dx = this.head.x - this.tail.x;
-      const dy = this.head.y - this.tail.y;
-      const d = Math.sqrt(dx * dx + dy * dy);
-      return d;
+      const head = this.body[0];
+      const stati = { snake: false, wall: false, food: false };
+      const directions: Directions = {
+        right: { x: head.x + 1, y: head.y, ...stati },
+        left: { x: head.x - 1, y: head.y, ...stati },
+        up: { x: head.x, y: head.y + 1, ...stati },
+        down: { x: head.x, y: head.y - 1, ...stati },
+      };
+      return directions;
     } catch (error) {
       this.logger.error(error);
-      // return minimal possible distance
-      return 0;
+      throw error;
     }
   }
 }
