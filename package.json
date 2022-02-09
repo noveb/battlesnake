@@ -1,10 +1,11 @@
 {
   "name": "battlesnake",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "myBattlesnake",
   "main": "./src/index.ts",
   "scripts": {
-    "build": "tsc --project ./",
+    "build": "tsc",
+    "build:noEmit": "tsc --noEmit",
     "start": "cross-env NODE_ENV=production PORT=9000 node ./dist/index.js",
     "debug": "cross-env NODE_ENV=development PORT=9000 nodemon ./src/index.ts",
     "debug:docker": "nodemon ./src/index.ts",

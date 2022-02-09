@@ -22,7 +22,7 @@ export default class Strategy {
   constructor(game: GameStatus, logger: Logger) {
     this.logger = logger;
     this.board = new Board(game.board);
-    this.me = new Snake(game.you, this.logger);
+    this.me = new Snake(game.you);
     this.snakes = [];
     this.longestSnake = 0;
     this.turn = game.turn;
