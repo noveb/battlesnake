@@ -12,5 +12,6 @@
     "extends": [
         "airbnb-base",
         "airbnb-typescript/base"
-    ]
+    ],
+    "ignorePatterns": "jest.config.ts"
 }

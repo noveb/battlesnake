@@ -11,6 +11,7 @@
     "debug:docker": "nodemon ./src/index.ts",
     "lint": "eslint --cache --ext .js,.ts ./src",
     "test": "jest",
+    "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
     "test:docker:watch": "node --inspect-brk node_modules/.bin/jest --runInBand",
     "prepare": "husky install"
