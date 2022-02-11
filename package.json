@@ -1,6 +1,6 @@
 {
   "name": "battlesnake",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "myBattlesnake",
   "main": "./src/index.ts",
   "scripts": {

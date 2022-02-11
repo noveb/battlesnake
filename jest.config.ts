@@ -21,7 +21,10 @@ export default {
 
   // An array of glob patterns indicating a set of files for which coverage information
   // should be collected
-  // collectCoverageFrom: undefined,
+  collectCoverageFrom: [
+    'src/**/*.js',
+    'src/**/*.ts',
+  ],
 
   // The directory where Jest should output its coverage files
   coverageDirectory: 'coverage',
@@ -30,6 +33,8 @@ export default {
   coveragePathIgnorePatterns: [
     '/node_modules/',
     '__.*__',
+    '\.spec\.',
+    'bin',
   ],
 
   // Indicates which provider should be used to instrument code for coverage
