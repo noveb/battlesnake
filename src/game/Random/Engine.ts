@@ -12,7 +12,7 @@ export default class RandomEngine implements Engine {
   constructor(game: GameStatus, logger: Logger) {
     this.logger = logger;
     this.game = game;
-    this.strategy = new Strategy(this.game, this.logger);
+    this.strategy = new Strategy(this.game);
   }
 
   move() {

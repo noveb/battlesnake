@@ -1,5 +1,16 @@
 import type { GameStatus } from '../../../shared/types';
 
+// assuming a 3x3 board
+const lowerLeft = { x: 0, y: 0 };
+const lowerMid = { x: 1, y: 0 };
+const lowerRight = { x: 2, y: 0 };
+const midLeft = { x: 0, y: 1 };
+const center = { x: 1, y: 1 };
+const midRight = { x: 2, y: 1 };
+const upperLeft = { x: 0, y: 2 };
+const upperMid = { x: 1, y: 2 };
+const upperRight = { x: 2, y: 2 };
+
 export default <GameStatus> {
   game: {
     id: 'game-00fe20da-94ad-11ea-bb37',
@@ -11,27 +22,15 @@ export default <GameStatus> {
   },
   turn: 14,
   board: {
-    height: 11,
-    width: 11,
+    height: 3,
+    width: 3,
     food: [
-      {
-        x: 5,
-        y: 5,
-      },
-      {
-        x: 9,
-        y: 0,
-      },
-      {
-        x: 2,
-        y: 6,
-      },
+      upperMid,
+      midRight,
+      lowerRight,
     ],
     hazards: [
-      {
-        x: 3,
-        y: 2,
-      },
+      lowerLeft,
     ],
     snakes: [
       {
@@ -39,24 +38,11 @@ export default <GameStatus> {
         name: 'My Snake',
         health: 54,
         body: [
-          {
-            x: 0,
-            y: 0,
-          },
-          {
-            x: 1,
-            y: 0,
-          },
-          {
-            x: 2,
-            y: 0,
-          },
+          midLeft,
+          upperLeft,
         ],
         latency: '111',
-        head: {
-          x: 0,
-          y: 0,
-        },
+        head: midLeft,
         length: 3,
         shout: 'why are we shouting??',
         squad: '',
@@ -71,28 +57,11 @@ export default <GameStatus> {
         name: 'Another Snake',
         health: 16,
         body: [
-          {
-            x: 5,
-            y: 4,
-          },
-          {
-            x: 5,
-            y: 3,
-          },
-          {
-            x: 6,
-            y: 3,
-          },
-          {
-            x: 6,
-            y: 2,
-          },
+          upperMid,
+          upperRight,
         ],
         latency: '222',
-        head: {
-          x: 5,
-          y: 4,
-        },
+        head: upperMid,
         length: 4,
         shout: "I'm not really sure...",
         squad: '',
@@ -108,25 +77,9 @@ export default <GameStatus> {
     id: 'snake-508e96ac-94ad-11ea-bb37',
     name: 'My Snake',
     health: 54,
-    body: [
-      {
-        x: 0,
-        y: 0,
-      },
-      {
-        x: 1,
-        y: 0,
-      },
-      {
-        x: 2,
-        y: 0,
-      },
-    ],
+    body: [center, lowerMid],
     latency: '111',
-    head: {
-      x: 0,
-      y: 0,
-    },
+    head: center,
     length: 3,
     shout: 'why are we shouting??',
     squad: '',
