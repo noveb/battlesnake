@@ -2,13 +2,13 @@ version: "3.8"
 
 services:
   api:
-    image: noveb/battlesnake:latest
+    image: noveb/battlesnake:production
     build:
       context: .
       dockerfile: Dockerfile
       args:
-        build_type: development
-      target: local
+        build_type: production
+      target: production
       cache_from:
         - node:16-alpine
     restart: unless-stopped
@@ -19,26 +19,20 @@ services:
       TIMEZONE: UTC
       MONGO_URL: mongodb://mongo:27017/
     ports:
-      - 9001:5000
-      - 9229:9229
+      - 9000:5000
     networks:
-      - bs_network
-    volumes:
-      - ./package.json:/app/package.json
-      - ./package-lock.json:/app/package-lock.json
-      - ./tsconfig.json:/app/tsconfig.json
-      - ./nodemon.json:/app/nodemon.json
-      - ./src:/app/src
-    command: npm run debug:docker
+      - bs_production_network
 
   mongo:
     image: mongo
     restart: unless-stopped
     networks:
-      - bs_network
+      - bs_production_network
       # environment:
       # MONGO_INITDB_ROOT_USERNAME: root
       # MONGO_INITDB_ROOT_PASSWORD: battlesnake
+    volumes:
+      - bs_storage:/data/db
     logging:
       driver: none
 
@@ -50,7 +44,7 @@ services:
     ports:
       - 8081:8081
     networks:
-      - bs_network
+      - bs_production_network
     environment:
       ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
       # ME_CONFIG_MONGODB_ADMINUSERNAME: root
@@ -58,6 +52,9 @@ services:
     logging:
       driver: none
 
+volumes:
+  bs_storage:
+
 networks:
-  bs_network:
+  bs_production_network:
     driver: bridge

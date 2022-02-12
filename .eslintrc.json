@@ -1,28 +1,20 @@
 {
-    "env": {
-        "es6": true,
-        "node": true
-    },
-    "extends": [
-        "airbnb-base"
-    ],
-    "globals": {
-        "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
-    },
+    "root": true,
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
-        "ecmaVersion": 2018,
-        "sourceType": "module"
+        "project": [
+            "./tsconfig.eslint.json"
+        ]
     },
-    "rules": {
-        "indent": [
-            "error",
-            4
-        ],
-        "no-else-return": "warn",
-        "no-console": "off",
-        "no-restricted-syntax": "off",
-        "linebreak-style": "off",
-        "no-plusplus": "off"
-    }
+    "plugins": [
+        "@typescript-eslint"
+    ],
+    "extends": [
+        "airbnb-base",
+        "airbnb-typescript/base"
+    ],
+    "ignorePatterns": [
+        "jest.config.ts",
+        "**/dist/*"
+    ]
 }
