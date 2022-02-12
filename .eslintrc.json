@@ -13,5 +13,8 @@
         "airbnb-base",
         "airbnb-typescript/base"
     ],
-    "ignorePatterns": "jest.config.ts"
+    "ignorePatterns": [
+        "jest.config.ts",
+        "**/dist/*"
+    ]
 }
