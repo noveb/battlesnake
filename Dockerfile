@@ -29,6 +29,7 @@ COPY --from=prod-dependencies --chown=node:node /app/node_modules ./node_modules
 COPY --from=prod-dependencies /wait-for-it.sh /wait-for-it.sh
 COPY --from=builder --chown=node:node /app/dist ./
 ENV NODE_ENV=production
+ENV PORT=5000
 USER node
 CMD [ "node", "index.js" ]
 ENTRYPOINT ["/sbin/tini", "--"]

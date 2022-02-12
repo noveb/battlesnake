@@ -28,13 +28,8 @@ services:
     restart: unless-stopped
     networks:
       - bs_production_network
-      # environment:
-      # MONGO_INITDB_ROOT_USERNAME: root
-      # MONGO_INITDB_ROOT_PASSWORD: battlesnake
     volumes:
       - bs_storage:/data/db
-    logging:
-      driver: none
 
   mongo-express:
     image: mongo-express
@@ -47,10 +42,6 @@ services:
       - bs_production_network
     environment:
       ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
-      # ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      # ME_CONFIG_MONGODB_ADMINPASSWORD: battlesnake
-    logging:
-      driver: none
 
 volumes:
   bs_storage:
