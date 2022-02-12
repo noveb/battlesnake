@@ -19,7 +19,7 @@ services:
       TIMEZONE: UTC
       MONGO_URL: mongodb://mongo:27017/
     ports:
-      - 9001:5000
+      - 9000:5000
       - 9229:9229
     networks:
       - bs_network

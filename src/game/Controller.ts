@@ -21,10 +21,10 @@ class Controller {
     const apiDetails: ApiDetails = {
       apiversion: '1',
       author: 'noveb',
-      color: '#000000',
+      color: '#0000FF',
       head: 'pixel',
       tail: 'pixel',
-      version: '0.4.0',
+      version: '0.5.6',
     };
     return res.status(200).json(apiDetails);
   };
