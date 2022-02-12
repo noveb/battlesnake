@@ -1,7 +1,8 @@
 import type { Request, Response } from 'express';
 import type { Logger } from 'winston';
 import { Router } from 'express';
-import type { ApiDetails, Move } from '../shared/types';
+import { createHash } from 'crypto';
+import type { ApiDetails, GameStatus, Move } from '../shared/types';
 import SspEngine from './SimpleShortestPath';
 import RandomEngine from './Random';
 
@@ -31,16 +32,31 @@ class Controller {
   private static start = (req: Request, res: Response) => res.sendStatus(200);
 
   private move = (req: Request, res: Response) => {
-    const game = new this.GameStatus(req.body);
-    game.save().then().catch((error: Error) => this.logger.error(error));
+    const { hash, timestamp } = this.saveGame(req.body);
+    this.logger.info(`game: ${req.body.game.id.split('-')[0]}, turn: ${req.body.turn}, hash: ${hash.substring(0, 10)}, timestamp: ${timestamp}`);
+
     const sspEngine = new SspEngine(req.body, this.logger);
     let move: Move = sspEngine.move();
     if (!move) {
       const randomEngine = new RandomEngine(req.body, this.logger);
       move = randomEngine.move();
     }
+
     return res.status(200).json(move);
   };
+
+  saveGame(gameStatus: GameStatus): { hash: String, timestamp: number } {
+    const hash = createHash('md5').update(JSON.stringify(gameStatus)).digest('hex');
+    const timestamp = Date.now();
+    const game = new this.GameStatus({
+      gameId: gameStatus.game.id,
+      timestamp,
+      hash,
+      gameStatus,
+    });
+    game.save().then().catch((error: Error) => this.logger.error(error));
+    return { hash, timestamp };
+  }
 
   private static end = (req: Request, res: Response) => res.sendStatus(200);
 

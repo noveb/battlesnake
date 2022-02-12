@@ -1,6 +1,11 @@
 import mongoose from 'mongoose';
 
-const gameStatusSchema = new mongoose.Schema({}, { strict: false });
+const gameStatusSchema = new mongoose.Schema({
+  gameId: String,
+  timestamp: { type: Number, default: Date.now() },
+  hash: String,
+  gameStatus: {},
+}, { strict: false });
 
 export const GameStatus = mongoose.model('gameStatus', gameStatusSchema);
 

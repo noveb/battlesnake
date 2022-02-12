@@ -1,4 +1,3 @@
-import logger from '../../logger';
 import {
   Coordinate, Directions, IBoard, ISnake,
 } from '../../shared/types';
@@ -49,7 +48,6 @@ export default class Board implements IBoard {
           if (Board.compareCoordinates(validDirections[key as keyof Directions], bodyPart)
           && index < length - 1
           ) {
-            logger.debug(`index: ${index}, length: ${length}`);
             validDirections[key as keyof Directions].snake = true;
           }
         });

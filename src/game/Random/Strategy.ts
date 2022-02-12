@@ -39,7 +39,6 @@ export default class Strategy {
       } = Strategy.findPossibleMoves(directions);
 
       const moves = [...shuffle(foodMoves), ...shuffle(otherMoves)];
-      logger.debug(JSON.stringify(moves));
       return moves[0];
     } catch (error) {
       logger.error(error);
