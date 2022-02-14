@@ -45,7 +45,9 @@ export default class Snake implements ISnake {
   possibleMoves() {
     try {
       const head = this.body[0];
-      const stati = { snake: false, wall: false, food: false };
+      const stati = {
+        snake: false, wall: false, food: false, openSpace: 0,
+      };
       const directions: Directions = {
         right: { x: head.x + 1, y: head.y, ...stati },
         left: { x: head.x - 1, y: head.y, ...stati },
