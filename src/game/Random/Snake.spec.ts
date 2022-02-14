@@ -18,16 +18,16 @@ describe('Random', () => {
         const result = testSnake.possibleMoves();
         const expectedResult: Directions = {
           left: {
-            x: 0, y: 1, wall: false, food: false, snake: false,
+            x: 0, y: 1, wall: false, food: false, snake: false, openSpace: 0,
           },
           right: {
-            x: 2, y: 1, wall: false, food: false, snake: false,
+            x: 2, y: 1, wall: false, food: false, snake: false, openSpace: 0,
           },
           up: {
-            x: 1, y: 2, wall: false, food: false, snake: false,
+            x: 1, y: 2, wall: false, food: false, snake: false, openSpace: 0,
           },
           down: {
-            x: 1, y: 0, wall: false, food: false, snake: false,
+            x: 1, y: 0, wall: false, food: false, snake: false, openSpace: 0,
           },
         };
         expect(result).toEqual(expectedResult);
@@ -39,16 +39,16 @@ describe('Random', () => {
         const result = testSnake.possibleMoves();
         const expectedResult: Directions = {
           left: {
-            x: -1, y: 0, wall: false, food: false, snake: false,
+            x: -1, y: 0, wall: false, food: false, snake: false, openSpace: 0,
           },
           right: {
-            x: 1, y: 0, wall: false, food: false, snake: false,
+            x: 1, y: 0, wall: false, food: false, snake: false, openSpace: 0,
           },
           up: {
-            x: 0, y: 1, wall: false, food: false, snake: false,
+            x: 0, y: 1, wall: false, food: false, snake: false, openSpace: 0,
           },
           down: {
-            x: 0, y: -1, wall: false, food: false, snake: false,
+            x: 0, y: -1, wall: false, food: false, snake: false, openSpace: 0,
           },
         };
         expect(result).toEqual(expectedResult);
@@ -60,16 +60,16 @@ describe('Random', () => {
         const result = testSnake.possibleMoves();
         const expectedResult: Directions = {
           left: {
-            x: 1, y: 2, wall: false, food: false, snake: false,
+            x: 1, y: 2, wall: false, food: false, snake: false, openSpace: 0,
           },
           right: {
-            x: 3, y: 2, wall: false, food: false, snake: false,
+            x: 3, y: 2, wall: false, food: false, snake: false, openSpace: 0,
           },
           up: {
-            x: 2, y: 3, wall: false, food: false, snake: false,
+            x: 2, y: 3, wall: false, food: false, snake: false, openSpace: 0,
           },
           down: {
-            x: 2, y: 1, wall: false, food: false, snake: false,
+            x: 2, y: 1, wall: false, food: false, snake: false, openSpace: 0,
           },
         };
         expect(result).toEqual(expectedResult);
