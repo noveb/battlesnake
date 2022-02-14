@@ -20,11 +20,11 @@ class Controller {
   private static root = (req: Request, res: Response) => {
     const apiDetails: ApiDetails = {
       apiversion: '1',
-      author: 'noveb',
-      color: '#0000FF',
-      head: 'pixel',
-      tail: 'pixel',
-      version: '0.5.6',
+      author: process.env.AUTHOR,
+      color: process.env.COLOR || '#000000',
+      head: process.env.HEAD || 'pixel',
+      tail: process.env.TAIL || 'pixel',
+      version: process.env.VERSION || 'experimental',
     };
     return res.status(200).json(apiDetails);
   };
@@ -37,6 +37,7 @@ class Controller {
 
     const sspEngine = new SspEngine(req.body, this.logger);
     let move: Move = sspEngine.move();
+    // let move: Move;
     if (!move) {
       const randomEngine = new RandomEngine(req.body, this.logger);
       move = randomEngine.move();
