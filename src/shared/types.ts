@@ -74,7 +74,8 @@ export type Coordinate = {
   y: number,
   snake?: boolean,
   wall?: boolean,
-  food?: boolean
+  food?: boolean,
+  openSpace?: number
 };
 
 export interface IBoard {

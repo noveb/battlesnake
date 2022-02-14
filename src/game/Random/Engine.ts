@@ -19,12 +19,16 @@ export default class RandomEngine implements Engine {
     try {
       const gameInfoLog = `game: ${this.game.game.id.split('-')[0]}, turn: ${this.game.turn}`;
 
-      const move: Move = this.strategy.nextMoveRandom();
+      let move: Move = this.strategy.moveOpenSpace();
       this.logger.info(`${gameInfoLog}, Random food ${JSON.stringify(move)}`);
 
+      if (!move) {
+        move = this.strategy.nextMoveRandom();
+        this.logger.info(`${gameInfoLog}, Random food ${JSON.stringify(move)}`);
+      }
       return move;
-    } catch (error) {
-      this.logger.error(error);
+    } catch (error: any) {
+      this.logger.error(error.stack);
       return { move: 'left' };
     }
   }
