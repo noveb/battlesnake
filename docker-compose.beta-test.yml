@@ -1,0 +1,51 @@
+version: "3.8"
+
+services:
+  api:
+    image: noveb/battlesnake:production
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        build_type: production
+      target: production
+      cache_from:
+        - node:16-alpine
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    env_file: .env
+    environment:
+      TIMEZONE: UTC
+      MONGO_URL: mongodb://mongo:27017/
+    ports:
+      - 9001:5000
+    networks:
+      - bs_betatest_network
+
+  mongo:
+    image: mongo
+    restart: unless-stopped
+    networks:
+      - bs_betatest_network
+    volumes:
+      - bs_storage:/data/db
+
+  mongo-express:
+    image: mongo-express
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    ports:
+      - 8082:8081
+    networks:
+      - bs_betatest_network
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
+
+volumes:
+  bs_storage:
+
+networks:
+  bs_betatest_network:
+    driver: bridge
