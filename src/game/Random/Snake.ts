@@ -42,18 +42,50 @@ export default class Snake implements ISnake {
     this.customizations = snake.customizations;
   }
 
-  possibleMoves() {
+  possibleMoves(rulesetName?: string, boardHeight?: number, boardWidth?: number) {
     try {
       const head = this.body[0];
       const stati = {
         snake: false, wall: false, food: false, openSpace: 0,
       };
-      const directions: Directions = {
-        right: { x: head.x + 1, y: head.y, ...stati },
-        left: { x: head.x - 1, y: head.y, ...stati },
-        up: { x: head.x, y: head.y + 1, ...stati },
-        down: { x: head.x, y: head.y - 1, ...stati },
+
+      const wrapAround = (x: number, d: number): number => {
+        if (x < 0) return d - 1;
+        if (x === d) return 0;
+        return x;
       };
+      let directions: Directions;
+      if (rulesetName === 'wrapped' && boardHeight && boardWidth) {
+        directions = {
+          right: {
+            x: wrapAround(head.x + 1, boardWidth),
+            y: wrapAround(head.y, boardHeight),
+            ...stati,
+          },
+          left: {
+            x: wrapAround(head.x - 1, boardWidth),
+            y: wrapAround(head.y, boardHeight),
+            ...stati,
+          },
+          up: {
+            x: wrapAround(head.x, boardWidth),
+            y: wrapAround(head.y + 1, boardHeight),
+            ...stati,
+          },
+          down: {
+            x: wrapAround(head.x, boardWidth),
+            y: wrapAround(head.y - 1, boardHeight),
+            ...stati,
+          },
+        };
+      } else {
+        directions = {
+          right: { x: head.x + 1, y: head.y, ...stati },
+          left: { x: head.x - 1, y: head.y, ...stati },
+          up: { x: head.x, y: head.y + 1, ...stati },
+          down: { x: head.x, y: head.y - 1, ...stati },
+        };
+      }
       return directions;
     } catch (error) {
       logger.error(error);

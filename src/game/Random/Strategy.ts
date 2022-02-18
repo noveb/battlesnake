@@ -2,8 +2,7 @@ import { shuffle } from 'lodash';
 import Board from './Board';
 import Snake from './Snake';
 import {
-  Coordinate,
-  Directions, GameStatus, Move,
+  Coordinate, Directions, GameStatus, Move, Ruleset,
 } from '../../shared/types';
 import logger from '../../logger';
 import { floodFill, initBoard } from '../FloodFill/floodFill';
@@ -19,17 +18,24 @@ export default class Strategy {
 
   turn: number;
 
+  ruleset: Ruleset;
+
   constructor(game: GameStatus) {
     this.board = new Board(game.board);
     this.me = new Snake(game.you);
     this.snakes = [];
     this.longestSnake = 0;
     this.turn = game.turn;
+    this.ruleset = game.game.ruleset;
   }
 
   nextMoveRandom() {
     try {
-      let directions = this.me.possibleMoves();
+      let directions = this.me.possibleMoves(
+        this.ruleset.name,
+        this.board.height,
+        this.board.width,
+      );
       directions = this.board.checkMoves(directions);
 
       if (Strategy.isDesperatePosition(directions)) {
