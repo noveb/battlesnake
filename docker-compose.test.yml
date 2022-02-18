@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   api:
-    image: noveb/battlesnake
+    image: noveb/battlesnake:test
     build:
       context: .
       dockerfile: Dockerfile
