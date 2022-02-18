@@ -74,6 +74,54 @@ describe('Random', () => {
         };
         expect(result).toEqual(expectedResult);
       });
+
+      it('should work for "wrapped" game with upper right corner', () => {
+        snake.body = [{ x: 2, y: 2 }];
+        const rulesetName: string = 'wrapped';
+        const boardHeight = 3;
+        const boardWidth = 3;
+        const testSnake = new Snake(snake);
+        const result = testSnake.possibleMoves(rulesetName, boardHeight, boardWidth);
+        const expectedResult: Directions = {
+          left: {
+            x: 1, y: 2, wall: false, food: false, snake: false,
+          },
+          right: {
+            x: 0, y: 2, wall: false, food: false, snake: false,
+          },
+          up: {
+            x: 2, y: 0, wall: false, food: false, snake: false,
+          },
+          down: {
+            x: 2, y: 1, wall: false, food: false, snake: false,
+          },
+        };
+        expect(result).toEqual(expectedResult);
+      });
+
+      it('should work for "wrapped" game with loser left corner', () => {
+        snake.body = [{ x: 0, y: 0 }];
+        const rulesetName: string = 'wrapped';
+        const boardHeight = 3;
+        const boardWidth = 3;
+        const testSnake = new Snake(snake);
+        const result = testSnake.possibleMoves(rulesetName, boardHeight, boardWidth);
+        const expectedResult: Directions = {
+          left: {
+            x: 2, y: 0, wall: false, food: false, snake: false,
+          },
+          right: {
+            x: 1, y: 0, wall: false, food: false, snake: false,
+          },
+          up: {
+            x: 0, y: 1, wall: false, food: false, snake: false,
+          },
+          down: {
+            x: 0, y: 2, wall: false, food: false, snake: false,
+          },
+        };
+        expect(result).toEqual(expectedResult);
+      });
     });
   });
 });
