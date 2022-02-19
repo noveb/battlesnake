@@ -181,5 +181,61 @@ describe('Random', () => {
         expect(result).toEqual(expectedResult);
       });
     });
+
+    describe('getDirectionFromCoords', () => {
+      it('should return right for normal games', () => {
+        const result = Strategy.getDirectionFromCoords({ x: 1, y: 1 }, { x: 2, y: 1 });
+        const expectedResult = { move: 'right' };
+        expect(result).toEqual(expectedResult);
+      });
+
+      it('should return left for normal games', () => {
+        const result = Strategy.getDirectionFromCoords({ x: 1, y: 1 }, { x: 0, y: 1 });
+        const expectedResult = { move: 'left' };
+        expect(result).toEqual(expectedResult);
+      });
+
+      it('should return up for normal games', () => {
+        const result = Strategy.getDirectionFromCoords({ x: 1, y: 1 }, { x: 1, y: 2 });
+        const expectedResult = { move: 'up' };
+        expect(result).toEqual(expectedResult);
+      });
+
+      it('should return down for normal games', () => {
+        const result = Strategy.getDirectionFromCoords({ x: 1, y: 1 }, { x: 1, y: 0 });
+        const expectedResult = { move: 'down' };
+        expect(result).toEqual(expectedResult);
+      });
+
+      it('should return right when wrapping around the board', () => {
+        const result = Strategy.getDirectionFromCoords({ x: 2, y: 1 }, { x: 0, y: 1 });
+        const expectedResult = { move: 'right' };
+        expect(result).toEqual(expectedResult);
+      });
+
+      it('should return left when wrapping around the board', () => {
+        const result = Strategy.getDirectionFromCoords({ x: 0, y: 1 }, { x: 2, y: 1 });
+        const expectedResult = { move: 'left' };
+        expect(result).toEqual(expectedResult);
+      });
+
+      it('should return up when wrapping around the board', () => {
+        const result = Strategy.getDirectionFromCoords({ x: 1, y: 2 }, { x: 1, y: 0 });
+        const expectedResult = { move: 'up' };
+        expect(result).toEqual(expectedResult);
+      });
+
+      it('should return down when wrapping around the board', () => {
+        const result = Strategy.getDirectionFromCoords({ x: 1, y: 0 }, { x: 1, y: 2 });
+        const expectedResult = { move: 'down' };
+        expect(result).toEqual(expectedResult);
+      });
+
+      it('should return down when wrapping around the board', () => {
+        const result = Strategy.getDirectionFromCoords({ x: 6, y: 0 }, { x: 6, y: 6 });
+        const expectedResult = { move: 'down' };
+        expect(result).toEqual(expectedResult);
+      });
+    });
   });
 });

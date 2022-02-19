@@ -1,4 +1,4 @@
-export function floodFill(board: any, x: number, y: number) {
+export function floodFill(board: any[][], x: number, y: number) {
   const queue = [];
   queue.push(board[x][y]);
   let reachableCounter = 0;

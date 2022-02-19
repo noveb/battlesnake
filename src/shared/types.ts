@@ -44,7 +44,7 @@ export type RulesetSettings = {
   foodSpawnChance: number,
   minimumFood: number,
   hazardDamagePerTurn: number,
-  map: string,
+  map?: string,
   shrinkEveryNTurns?: number,
   allowBodyCollisions?: boolean,
   sharedElimination?: boolean,
