@@ -68,7 +68,7 @@ export default class SspStrategy {
         }
       });
       if (path[1] === undefined) return undefined;
-      const direction = this.getDirectionFromCoords(
+      const direction = SspStrategy.getDirectionFromCoords(
         this.me.head,
         { x: path[1][0], y: path[1][1] },
       );
@@ -136,7 +136,7 @@ export default class SspStrategy {
       if (path.length <= 1) {
         return undefined;
       }
-      const direction = this.getDirectionFromCoords(
+      const direction = SspStrategy.getDirectionFromCoords(
         this.me.head,
         { x: path[1][0], y: path[1][1] },
       );
@@ -147,18 +147,19 @@ export default class SspStrategy {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  getDirectionFromCoords(start: Coordinate, goal: Coordinate) {
-    try {
-      if (goal.x > start.x) return { move: 'right' };
-      if (goal.x < start.x) return { move: 'left' };
-      if (goal.y < start.y) return { move: 'down' };
-      if (goal.y > start.y) return { move: 'up' };
-      return undefined;
-    } catch (error) {
-      this.logger.error(error);
-      throw error;
-    }
+  static getDirectionFromCoords(start: Coordinate, goal: Coordinate) {
+    // normal mode
+    if (start.x - goal.x === -1) return { move: 'right' };
+    if (start.x - goal.x === 1) return { move: 'left' };
+    if (start.y - goal.y === 1) return { move: 'down' };
+    if (start.y - goal.y === -1) return { move: 'up' };
+
+    // wrapped mode: assume a step greater 1 means wrapping around the board
+    if (start.x - goal.x < -1) return { move: 'left' };
+    if (start.x - goal.x > 1) return { move: 'right' };
+    if (start.y - goal.y > 1) return { move: 'down' };
+    if (start.y - goal.y < -1) return { move: 'up' };
+    return undefined;
   }
 
   initGrid(unwalkables: Coordinate[]): pathFinder.Grid {

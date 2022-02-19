@@ -55,14 +55,19 @@ export default class Strategy {
   }
 
   moveOpenSpace() {
-    let directions = this.me.possibleMoves();
+    let directions = this.me.possibleMoves(
+      this.ruleset.name,
+      this.board.height,
+      this.board.width,
+    );
     directions = this.board.checkMoves(directions);
 
     if (Strategy.isDesperatePosition(directions)) {
       return undefined;
     }
 
-    const snakeBodies = this.board.snakes.flatMap((snake) => snake.body);
+    const snakeBodies = this.board.snakes.flatMap((snake) => snake.body.slice(0, -1));
+    const snakeTails = this.board.snakes.flatMap((snake) => snake.body.slice(-1));
 
     const possibleMoves = Object.values(directions).filter((move) => !(move.snake || move.wall));
 
@@ -77,7 +82,14 @@ export default class Strategy {
           move.x,
           move.y,
         );
-        move.openSpace = ffResult.reachableCounter;
+        const tailsIncluded = snakeTails.reduce((acc, cur) => {
+          if (ffResult.board[cur.x][cur.y].reachable === true) {
+            return true;
+          }
+          return acc;
+        }, false);
+        move.openSpace = tailsIncluded
+          ? ffResult.reachableCounter + Infinity : ffResult.reachableCounter;
       }
     }
 
@@ -126,10 +138,17 @@ export default class Strategy {
   }
 
   static getDirectionFromCoords(start: Coordinate, goal: Coordinate) {
-    if (goal.x > start.x) return { move: 'right' };
-    if (goal.x < start.x) return { move: 'left' };
-    if (goal.y < start.y) return { move: 'down' };
-    if (goal.y > start.y) return { move: 'up' };
+    // normal mode
+    if (start.x - goal.x === -1) return { move: 'right' };
+    if (start.x - goal.x === 1) return { move: 'left' };
+    if (start.y - goal.y === 1) return { move: 'down' };
+    if (start.y - goal.y === -1) return { move: 'up' };
+
+    // wrapped mode: assume a step greater 1 means wrapping around the board
+    if (start.x - goal.x > 1) return { move: 'right' };
+    if (start.x - goal.x < -1) return { move: 'left' };
+    if (start.y - goal.y < -1) return { move: 'down' };
+    if (start.y - goal.y > 1) return { move: 'up' };
     return undefined;
   }
 }
