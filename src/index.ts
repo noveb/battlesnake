@@ -1,10 +1,10 @@
 import * as bodyParser from 'body-parser';
 import express from 'express';
 import morgan from 'morgan';
+import cors from 'cors';
 import type { Request, Response } from 'express';
 // import path from 'node:path';
 import logger from './logger';
-
 import {
   fallbackHandler,
   notFoundHandler,
@@ -20,6 +20,7 @@ app.set('port', (process.env.PORT || 5000));
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
+app.use(cors());
 // app.set('view engine', 'pug');
 // app.use(express.static(path.join(`${__dirname}/src/views`)));
 // app.set('views', './src/views');
