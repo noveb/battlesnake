@@ -44,7 +44,7 @@ export type RulesetSettings = {
   foodSpawnChance: number,
   minimumFood: number,
   hazardDamagePerTurn: number,
-  map: string,
+  map?: string,
   shrinkEveryNTurns?: number,
   allowBodyCollisions?: boolean,
   sharedElimination?: boolean,
@@ -74,7 +74,8 @@ export type Coordinate = {
   y: number,
   snake?: boolean,
   wall?: boolean,
-  food?: boolean
+  food?: boolean,
+  openSpace?: number
 };
 
 export interface IBoard {
