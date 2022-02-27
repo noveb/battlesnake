@@ -11,6 +11,7 @@ export type ApiDetails = {
 
 export type Move = {
   move: string;
+  id?: string;
 } | undefined;
 
 export interface Engine {
@@ -66,7 +67,8 @@ export interface ISnake {
     color: string,
     head: string,
     tail: string
-  }
+  },
+  eliminated?: boolean
 }
 
 export type Coordinate = {
