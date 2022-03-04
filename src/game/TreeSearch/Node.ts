@@ -25,6 +25,13 @@ export default class Node {
     return !this.children?.length;
   }
 
+  addChildren(child: Node) {
+    if (!Array.isArray(this.children)) {
+      this.children = [];
+    }
+    this.children.push(child);
+  }
+
   hasChildren() {
     return !!this.children?.length;
   }

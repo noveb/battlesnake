@@ -43,7 +43,7 @@ export default class Tree {
     const parentId: number = parent instanceof Node ? parent.id : parent;
     for (const node of this.preOrderTraversal()) {
       if (node.id === parentId) {
-        node.children.push(new Node(this.getNextId(), state, node));
+        node.addChildren(new Node(this.getNextId(), state, node));
         return true;
       }
     }
