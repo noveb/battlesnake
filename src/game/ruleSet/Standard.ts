@@ -172,12 +172,12 @@ function setMySnake(gameState: GameStatus) {
   gameState.you = me;
 }
 
-export function isGameOver(gameState: GameStatus) {
+export function isGameOver(gameState: GameStatus, solo: boolean = false) {
   let remainingSnakes = 0;
   gameState.board.snakes.forEach((snake) => {
     if (!snake.eliminated) remainingSnakes += 1;
   });
-  return remainingSnakes <= 1;
+  return solo ? remainingSnakes === 0 : remainingSnakes <= 1;
 }
 
 export function createNextBoardState(gameState: GameStatus, moves: Move[]) {
