@@ -36,20 +36,12 @@ ENTRYPOINT ["/sbin/tini", "--"]
 HEALTHCHECK --interval=10s --timeout=1s CMD node ./bin/healthCheck.js
 
 FROM base as local
-RUN apk add --no-cache tini
+RUN apk add --no-cache tini git
+ENV GIT_WORK_TREE=/app/ GIT_DIR=/app/.git
 COPY --from=dev-dependencies --chown=node:node /app/node_modules ./node_modules
 COPY --from=dev-dependencies /wait-for-it.sh /wait-for-it.sh
 COPY --chown=node:node src ./src
 USER node
 CMD [ "npm", "run", "debug:docker" ]
 ENTRYPOINT ["/sbin/tini", "--"]
-HEALTHCHECK --interval=10s --timeout=1s CMD node ./src/bin/healthCheck.js
-
-FROM base as test
-RUN apk add --no-cache git
-COPY --from=dev-dependencies --chown=node:node /app/node_modules ./node_modules
-COPY --from=dev-dependencies /wait-for-it.sh /wait-for-it.sh
-COPY --chown=node:node .git ./.git
-COPY --chown=node:node src ./src
-USER node
-CMD [ "npm", "run", "test:watch" ]
+HEALTHCHECK --interval=180s --timeout=1s CMD node ./src/bin/healthCheck.js
