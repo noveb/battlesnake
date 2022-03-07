@@ -8,7 +8,7 @@ services:
       dockerfile: Dockerfile
       args:
         build_type: development
-      target: test
+      target: local
       cache_from:
         - node:16-alpine
     restart: unless-stopped
@@ -21,13 +21,15 @@ services:
     networks:
       - bs_network
     volumes:
+      # https://stackoverflow.com/questions/60768371/running-jest-in-watch-mode-in-a-docker-container-in-a-subdirectory-of-git-root
+      - ./.git:/app/.git
       - ./package.json:/app/package.json
       - ./package-lock.json:/app/package-lock.json
       - ./tsconfig.json:/app/tsconfig.json
       - ./nodemon.json:/app/nodemon.json
       - ./jest.config.ts:/app/jest.config.ts
       - ./src:/app/src
-    command: npm run test:watch
+    command: npm run test:docker:watch
 
 networks:
   bs_network:

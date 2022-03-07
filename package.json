@@ -13,7 +13,7 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
-    "test:docker:watch": "node --inspect-brk node_modules/.bin/jest --runInBand",
+    "test:docker:watch": "node --inspect=0.0.0.0:9229 node_modules/.bin/jest --runInBand --watch",
     "prepare": "husky install"
   },
   "repository": {

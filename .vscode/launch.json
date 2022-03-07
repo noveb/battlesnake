@@ -8,7 +8,11 @@
             "type": "node",
             "request": "attach",
             "name": "Docker: Attach to Node",
-            "remoteRoot": "/app"
+            "remoteRoot": "/app",
+            "port": 9229,
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "restart": true
         },
         {
             "name": "Debug Jest Tests",
