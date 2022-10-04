@@ -2,6 +2,7 @@ import {
   GameStatus, Move,
 } from '../../shared/types';
 import Tree from './Tree';
+import Node from './Node';
 import { createNextBoardState, isGameOver } from '../ruleSet/Standard';
 
 export default class Strategy {
@@ -14,6 +15,8 @@ export default class Strategy {
     { move: 'right' },
   ];
 
+  tree: Tree;
+
   constructor(game: GameStatus) {
     this.gameState = game;
     this.MOVES = [
@@ -22,15 +25,16 @@ export default class Strategy {
       { move: 'left' },
       { move: 'right' },
     ];
+    this.tree = new Tree(this.gameState);
   }
 
   buildTree(simulationDepth: number = 1): Tree {
     let simDepth = simulationDepth;
-    const tree = new Tree(this.gameState);
+
     const { snakes } = this.gameState.board;
     const soloGame = this.gameState.board.snakes.length === 1;
     // eslint-disable-next-line no-restricted-syntax
-    for (const node of tree.preOrderTraversal()) {
+    for (const node of this.tree.preOrderTraversal()) {
       if (!simDepth) break;
       simDepth -= 1;
       for (let i = 0; i < snakes.length; i += 1) {
@@ -42,12 +46,29 @@ export default class Strategy {
             const newGameState = createNextBoardState(node.state, moves);
             const gameOver = isGameOver(newGameState, soloGame);
             if (!gameOver) {
-              tree.insert(node, newGameState);
+              this.tree.insert(node, newGameState);
             }
           }
         }
       }
     }
-    return tree;
+    return this.tree;
+  }
+
+  getLeafs() {
+    const leafs: Node[] = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const node of this.tree.postOrderTraversal()) {
+      if (node.isLeaf()) {
+        leafs.push(node);
+      }
+    }
+    return leafs;
+  }
+
+  getParent(node: Node): Node {
+    if (!node.parent) return this.tree.root;
+    if (node.parent === this.tree.root) return node;
+    return this.getParent(node.parent);
   }
 }
